@@ -32,7 +32,7 @@ Here you have a simplify documentation of how to use program
 ```
 ### Tecnologies
 - Python
-- [Link](https://docs.obspy.org/index.html "ObsPy")
+- [ObsPy](https://docs.obspy.org/index.html "ObsPy")
 
 ### Licensing
 
