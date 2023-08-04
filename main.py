@@ -1,42 +1,53 @@
-from obspy import read, UTCDateTime
+from obspy import read
 
 # Ruta del archivo .mseed y archivo de salida .txt
-ruta_archivo_mseed = "route/file.ms"
-ruta_archivo_txt = "route/result.txt"
+ruta_archivo_mseed_ejex = "SB.121..DP1.2022-12-30T13.59.19.ms"
+ruta_archivo_mseed_ejey = "SB.121..DP2.2022-12-30T13.59.19.ms"
+ruta_archivo_mseed_ejez = "SB.121..DPZ.2022-12-30T13.59.19.ms"
 
-# Leer el archivo .mseed
-st = read(ruta_archivo_mseed)
-# print(st)
-# print(st[0].stats)
-# print(st[0].data)
-data = st[0].data
+newName = ruta_archivo_mseed_ejex.split(".")
+archivo_resultado = '{}.{}..{}.txt'.format(newName[0], newName[1], newName[4])
 
-# Obtener la fecha de la medición
-fecha_medicion = st[0].stats.starttime
+# Read the .mseed files
+stx = read(ruta_archivo_mseed_ejex)
+sty = read(ruta_archivo_mseed_ejey)
+stz = read(ruta_archivo_mseed_ejez)
 
-# Crear una lista para almacenar los resultados
-resultados = []
+# Create an empty array for each coordinate
+resultsX = []
+resultsY = []
+resultsZ = []
 
-# Recorrer cada traza en el Stream
-for traza in st:
-  # Obtener los valores de la traza
-  valores_traza = traza.data
-  # Agregar los valores a la lista de resultados
-  resultados.extend(valores_traza)
+# Travel each Stream trace
+for trace in stx:
+    # Get the trace values
+    # Append the value in the results array
+    trace_values = trace.data
+    resultsX.extend(trace_values)
 
-# Obtener los metadatos del archivo .mseed
-metadatos = st[0].stats
+for trace in sty:
+    trace_values = trace.data
+    resultsY.extend(trace_values)
 
-# Escribir la información en el archivo .txt
-with open(ruta_archivo_txt, 'w') as archivo_txt:
-  archivo_txt.write(f"Fecha de la medición: {fecha_medicion}\n")
-  #metadatos
-  archivo_txt.write("\nMetadatos:\n")
-  for clave, valor in metadatos.items():
-    archivo_txt.write(f"{clave}: {valor}\n")
-  #resultados
-  archivo_txt.write("Resultados:\n")
-  for resultado in resultados:
-    archivo_txt.write(f"{resultado/1000}\n")
+for trace in stz:
+    trace_values = trace.data
+    resultsZ.extend(trace_values)
 
-print("finished")
+# get .mseed metadata
+metadata = stx[0].stats
+# Write the new information in an ascii type file
+with (open(archivo_resultado, 'w') as archivo_txt):
+    # metadata
+    for clave, valor in metadata.items():
+        archivo_txt.write(f"{clave.capitalize()}: {valor}\n")
+    archivo_txt.write('Channels: 3\n')
+
+    # results
+    for i in range(len(resultsX)):
+        linea = [
+            f"{resultsX[i]}\t", f"{resultsY[i]}\t",
+            f"{resultsZ[i]}\n"
+        ]
+        archivo_txt.write(''.join(linea))
+
+    print("finished successfully")
