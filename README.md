@@ -1,4 +1,4 @@
-# mseed-converter
+# mseed2ascii-converter
 
 ## Convert miniSEED time series data to ASCII
 
@@ -10,7 +10,7 @@ Here you have a simplify documentation of how to use program
 
 - importing obspy library
 
-`from obspy import read, UTCDateTime`
+`from obspy import read`
 
 - Read .mseed file
 
