@@ -1,4 +1,4 @@
-# mseed2ascii-converter
+# mseed2ascii-converter v1.3.0
 
 ## Convert miniSEED time series data to ASCII
 
@@ -41,6 +41,6 @@ Here you have a simplify documentation of how to use program
 
 ### Licensing
 
-Apache license version 2.  See included LICENSE file for details.
+Apache license version 2.0. See included LICENSE file for details.
 
 Copyright (c) 2023 Jonatan Haarala
